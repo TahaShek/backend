@@ -31,16 +31,18 @@ app.all('*', (req, res, next) => {
 
 // api routes
 
-const testing=require('./routes/testingRoute')
-const get=require('./routes/testingRoute')
-const formData=require('./routes/login-route')
-const table=require('./routes/table-route')
-app.use('/table',table)
-app.use('/formData',formData)
-app.use('/get',get)
-app.use('/testing',testing)
+// const testing=require('./routes/testingRoute')
+// const get=require('./routes/testingRoute')
+// const formData=require('./routes/login-route')
+// const table=require('./routes/table-route')
+// app.use('/table',table)
+// app.use('/formData',formData)
+// app.use('/get',get)
+// app.use('/testing',testing)
 // api routes
 
+const ProductDataToDatabase=require('./routes/productRoute')
+app.use('/ProductDataToDatabase',ProductDataToDatabase)
 
 // //Start Block Checking Routes As express not found Url not Founded we need to do it explicitly 
 app.use((req, res, next) => {

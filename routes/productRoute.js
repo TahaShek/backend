@@ -3,5 +3,7 @@ const Router= express.Router()
 
 const{ProductData}=require('../controller/productController')
 
-Router.post('/ProductData',ProductData)
+const{UploadImage}=require('../middlewares/media-middleware')
+
+Router.post('/ProductData',UploadImage.array('images',20),ProductData)
 module.exports=Router

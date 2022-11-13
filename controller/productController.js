@@ -34,8 +34,28 @@ try {
 }
 }
 
+const GetProdcutData=async(req,res)=>{
+try {
+    
+    const documentToGet=await ProductModelSchema.find();
+    res.json({
+        message:"all document found",
+        Result:documentToGet,
+        data:true
+
+    })
+
+} catch (error) {
+    res.json({
+        message: error.message,
+        Result: null,
+        Data: false
+      })
+}
+}
 
 
 
 
-module.exports={ProductData}
+
+module.exports={ProductData,GetProdcutData}

@@ -12,6 +12,7 @@ app.use(express.json())
 app.use(express.raw())
 app.use(express.text())
 app.use(cors())
+app.use('/assests',express.static('assests'))
 const PORT=process.env.PORT
 // BLOCK START INITLIZATION
 
@@ -42,6 +43,8 @@ app.all('*', (req, res, next) => {
 // api routes
 
 const ProductDataToDatabase=require('./routes/productRoute')
+const GetProductDataFromDatabase =require('./routes/productRoute')
+app.use('/GetProductDataFromDatabase',GetProductDataFromDatabase)
 app.use('/ProductDataToDatabase',ProductDataToDatabase)
 
 // //Start Block Checking Routes As express not found Url not Founded we need to do it explicitly 

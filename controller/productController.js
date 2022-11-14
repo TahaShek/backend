@@ -8,7 +8,7 @@ try {
     req.files.forEach(element => {
         const {filename,orignalname,mimetype}=element
         ImageDetails.push({
-            ImageUrl:`assests/Product/${productName},${filename}`,
+            ImageUrl:`assets/Product/${productName},${filename}`,
             ImageName:orignalname,
             ImageMimeType:mimetype
         })
@@ -34,28 +34,50 @@ try {
 }
 }
 
-const GetProdcutData=async(req,res)=>{
-try {
+// const GetProdcutData=async(req,res)=>{
+// try {
     
-    const documentToGet=await ProductModelSchema.find();
-    res.json({
-        message:"all document found",
-        Result:documentToGet,
-        data:true
+//     const documentToGet=await ProductModelSchema.find();
+//     res.json({
+//         message:"all document found",
+//         Result:documentToGet,
+//         data:true
 
-    })
+//     })
 
-} catch (error) {
-    res.json({
-        message: error.message,
-        Result: null,
-        Data: false
-      })
+// } catch (error) {
+//     res.json({
+//         message: error.message,
+//         Result: null,
+//         Data: false
+//       })
+// }
+// }
+
+
+const GetProductData = async (req, res) => {
+    try {
+        // const DocToGet = await ProductModel.findOne(
+        //     { Status: 0 }, //Condition
+        //     { ProductPrice: 0 } //Projecttion
+        //     //Options
+        // );
+        const docToGet = await ProductModelSchema.find();
+        res.json({
+            Message: 'All Documents Found',
+            Data: true,
+            result: docToGet
+        })
+    } catch (error) {
+        res.json({
+            Message: error.mesage,
+            Result: null,
+            Data: false
+        })
+    }
 }
-}
 
 
 
 
-
-module.exports={ProductData,GetProdcutData}
+module.exports={ProductData,GetProductData}

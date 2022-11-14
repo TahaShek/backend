@@ -3,6 +3,7 @@ const express=require('express')
 const loadVariable=require('./configration/loadmyVariable')
 const DataBase=require('./configration/database')
 const cors=require('cors')
+const path=require('path')
 // BLOCK START DEPENDENCIES
 
 // BLOCK START INITLIZATION
@@ -12,7 +13,8 @@ app.use(express.json())
 app.use(express.raw())
 app.use(express.text())
 app.use(cors())
-app.use('/assests',express.static('assests'))
+// app.use('/assests',express.static('assests'))
+app.use('/assets', express.static('assets'));
 const PORT=process.env.PORT
 // BLOCK START INITLIZATION
 

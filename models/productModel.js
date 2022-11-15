@@ -15,9 +15,7 @@ const ProductSchema=mongoose.Schema({
     price: { type: Number, required: true },    
     companyName:{type:String,required:true},
     description:{type:String,required:true},
-
-    
-
+    SoftDeleteStatus:{type:Number,default:0},    
     size:[],
     status:{type:Number,default:1},
     category: { type:String, required:true},
@@ -35,30 +33,6 @@ const ProductSchema=mongoose.Schema({
         default:`${year}-${month}-${day}-${time}`
     }
 },{timestamps:true})
-
-// const ProductSchema = mongoose.Schema({
-//     productName: { type: String, required: true },
-//     quantity: { type: Number, required: true },
-//     price: { type: Number, required: true },
-//     // companyName: { type: String, required: true },
-//     // color:{ type:String, required:true },
-//     size:[],
-//     // description:{ type:String, required:true },/
-//     status: { type: Number, default: 1 },
-//     // softDeleteStatus: { type: Number, default: 0},
-//     category: { type:String, required:true},
-//     imageDetail: [
-//         {
-//             ImageUrl: { type: String },
-//             ImageName: { type: String },
-//             ImageMimeType: { type: String },
-//         }
-//     ],
-//     CreatedDate: {
-//         type: String,
-//         default: `${year}-${month}-${day}-${time}`,
-//     }
-// }, { timestamps: true })
 
 
 module.exports=mongoose.model("Products",ProductSchema)

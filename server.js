@@ -1,9 +1,10 @@
 // BLOCK START DEPENDENCIES
 const express=require('express')
-const loadVariable=require('./configration/loadmyVariable')
-const DataBase=require('./configration/database')
 const cors=require('cors')
 const path=require('path')
+const loadVariable=require('./configration/loadmyVariable')
+const DataBase=require('./configration/database')
+
 // BLOCK START DEPENDENCIES
 
 // BLOCK START INITLIZATION
@@ -46,8 +47,12 @@ app.all('*', (req, res, next) => {
 
 const ProductDataToDatabase=require('./routes/productRoute')
 const GetProductDataFromDatabase =require('./routes/productRoute')
+const GetProductDataFromDatabaseById =require('./routes/productRoute')
+const SoftDeletebyId=require('./routes/productRoute')
 app.use('/GetProductDataFromDatabase',GetProductDataFromDatabase)
 app.use('/ProductDataToDatabase',ProductDataToDatabase)
+app.use('/GetProductDataFromDatabaseById',GetProductDataFromDatabaseById)
+app.use('/SoftDeletebyId',SoftDeletebyId)
 
 // //Start Block Checking Routes As express not found Url not Founded we need to do it explicitly 
 app.use((req, res, next) => {

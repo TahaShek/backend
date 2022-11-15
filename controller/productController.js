@@ -8,7 +8,7 @@ try {
     req.files.forEach(element => {
         const {filename,orignalname,mimetype}=element
         ImageDetails.push({
-            ImageUrl:`assets/Product/${productName},${filename}`,
+            ImageUrl:`assets/Product/${productName}/${filename}`,
             ImageName:orignalname,
             ImageMimeType:mimetype
         })
@@ -34,32 +34,12 @@ try {
 }
 }
 
-// const GetProdcutData=async(req,res)=>{
-// try {
-    
-//     const documentToGet=await ProductModelSchema.find();
-//     res.json({
-//         message:"all document found",
-//         Result:documentToGet,
-//         data:true
-
-//     })
-
-// } catch (error) {
-//     res.json({
-//         message: error.message,
-//         Result: null,
-//         Data: false
-//       })
-// }
-// }
-
 
 const GetProductData = async (req, res) => {
     try {
         // const DocToGet = await ProductModel.findOne(
-        //     { Status: 0 }, //Condition
-        //     { ProductPrice: 0 } //Projecttion
+        //     { Status: 0 },
+        //     { ProductPrice: 0 } 
         //     //Options
         // );
         const docToGet = await ProductModelSchema.find();
@@ -78,6 +58,55 @@ const GetProductData = async (req, res) => {
 }
 
 
+const GetProductById =async (req,res)=>{
+    
+    try {
+        const ID =req.params._id
+        const documentToFind=await ProductModelSchema.findOne(
+
+            {_id:ID},    //condition
+            {status:0}   //projection
+        )
+        res.json({
+            message:'data found successfully',
+            result:documentToFind,
+            data:true
+
+        })
+          
+    } catch (error) {
+        res.json({
+            Message: error.mesage,
+            Result: null,
+            Data: false
+        })
+    }
+}
 
 
-module.exports={ProductData,GetProductData}
+const SoftDelete= async(req,res)=>{
+
+    try {
+         const ID=req.params._id
+         const documentDelete=await ProductModelSchema.updateOne(
+          {_id:ID},
+          {$set:{SoftDeleteStatus:1}
+        }
+         );
+         res.json({
+            message:"deleted sucessfully",
+            result:documentDelete,
+            data:true
+         })
+
+    } catch (error) {
+        res.json({
+            Message: error.mesage,
+            Result: null,
+            Data: false
+        })
+    }
+}
+
+
+module.exports={ProductData,GetProductData,GetProductById,SoftDelete}

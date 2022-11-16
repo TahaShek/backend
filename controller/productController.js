@@ -1,4 +1,6 @@
 const ProductModelSchema =require('../models/productModel')
+const fs=require('fs')
+
 
 const ProductData=async (req,res )=>{
 try {
@@ -50,7 +52,7 @@ const GetProductData = async (req, res) => {
         })
     } catch (error) {
         res.json({
-            Message: error.mesage,
+            Message: error.message,
             Result: null,
             Data: false
         })
@@ -76,7 +78,7 @@ const GetProductById =async (req,res)=>{
           
     } catch (error) {
         res.json({
-            Message: error.mesage,
+            Message: error.message,
             Result: null,
             Data: false
         })
@@ -84,10 +86,11 @@ const GetProductById =async (req,res)=>{
 }
 
 
+// SOFT DLEETE 
 const SoftDelete= async(req,res)=>{
 
     try {
-         const ID=req.params._id
+         const ID=req.params._id         
          const documentDelete=await ProductModelSchema.updateOne(
           {_id:ID},
           {$set:{SoftDeleteStatus:1}
@@ -101,7 +104,7 @@ const SoftDelete= async(req,res)=>{
 
     } catch (error) {
         res.json({
-            Message: error.mesage,
+            Message: error.message,
             Result: null,
             Data: false
         })
@@ -109,4 +112,92 @@ const SoftDelete= async(req,res)=>{
 }
 
 
-module.exports={ProductData,GetProductData,GetProductById,SoftDelete}
+// HARD DELETE 
+const HardDelete=async(req,res)=>{
+    
+    
+    try {
+        const ID=req.params._id
+        const doctoget=await ProductModelSchema.findOne({_id:ID})
+    if(!!doctoget){
+    const dochardelete=await ProductModelSchema.deleteOne({_id:doctoget._id} )
+     doctoget.ImageDetail.forEach((file)=>{
+     fs.unlinkSync(`${file.ImageUrl}`)
+ })
+ fs.rmdirSync(`./assets/Product/${doctoget.productName}`)
+    res.json({
+        message:'deleted',
+        data:true,
+        result:dochardelete
+     })
+}
+else{
+    res.json({
+        Message: 'not deleted',
+        Result: null,
+        Data: true
+    })
+}
+
+
+    } catch (error) {
+        res.json({
+            Message: error.message,
+            Result: null,
+            Data: false
+        })
+    }
+}
+
+
+UpdateDatabyId=async (req,res)=>{
+
+    try {
+        const ID=req.body._id
+        const payload=req.body 
+        const documentToUpdate=await ProductModelSchema.updateOne(
+
+            {_id:ID},
+            payload
+        )
+        res.json({
+            message:"data updated",
+            result:documentToUpdate,
+            data:true
+        })
+
+    } catch (error) {
+        
+        res.json({
+            Message: error.message,
+            Result: null,
+            Data: false
+        })
+    }
+}
+
+
+// const UpdateById = async (req, res) => {
+//     try {
+//         const Id =  req.body._id;
+//         const payLoad = req.body;
+//         const docToUpdate = await ProductModel.updateOne(
+//             {_id:Id},
+//             payLoad
+//             )
+//             res.json({
+//                 message:'Updated Successfuly',
+//                 Data:true,
+//                 Result:docToUpdate
+//             })
+//     } catch (error) {
+//         res.json({
+//             message: error,
+//             Result: null,
+//             Data: false
+//         })
+//     }
+// }
+
+
+module.exports={ProductData,GetProductData,GetProductById,SoftDelete,HardDelete,UpdateDatabyId}

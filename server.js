@@ -46,21 +46,9 @@ app.all('*', (req, res, next) => {
 // api routes
 
 const ProductDataToDatabase=require('./routes/productRoute')
-const GetProductDataFromDatabase =require('./routes/productRoute')
-const GetProductDataFromDatabaseById =require('./routes/productRoute')
-const SoftDeletebyId=require('./routes/productRoute')
-const HardDeleteFromDataBase=require('./routes/productRoute')
-const UpdateDatainDataBase=require('./routes/productRoute')
 
 
-
-
-app.use('/GetProductDataFromDatabase',GetProductDataFromDatabase)
 app.use('/ProductDataToDatabase',ProductDataToDatabase)
-app.use('/GetProductDataFromDatabaseById',GetProductDataFromDatabaseById)
-app.use('/SoftDeletebyId',SoftDeletebyId)
-app.use('/HardDeleteFromDataBase',HardDeleteFromDataBase)
-app.use('/UpdateDatainDataBase',UpdateDatainDataBase)
 
 // //Start Block Checking Routes As express not found Url not Founded we need to do it explicitly 
 app.use((req, res, next) => {
@@ -85,4 +73,5 @@ app.use((error, req, res, next) => {
 app.listen(PORT,()=>{
     console.log(`your port is ${PORT}`)
     console.log(process.env)
+    
 })

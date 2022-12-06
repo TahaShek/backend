@@ -1,38 +1,39 @@
-const mongoose =require('mongoose')
+//Dependencies
+const mongoose = require('mongoose');
 
-// set data 
-const today=new Date();
-const day= today.getDate();
-const month =today.getMonth()+1;
-const  year=today.getFullYear()
-const time =today.getTime()
+// Date
+const today = new Date(); //date class
+const day = today.getDate(); //day
+const month = today.getMonth() + 1; //month
+const year = today.getFullYear(); //year
+const time = today.getTime(); //time 
 
 
-// creating product schemmea or collection 
-const ProductSchema=mongoose.Schema({
-    productName:{type:String,required:true},
-    quantity: { type: Number, required: true },
-    price: { type: Number, required: true },    
-    companyName:{type:String,required:true},
-    description:{type:String,required:true},
-    SoftDeleteStatus:{type:Number,default:0},    
+//Start Block Schema Creating
+const ProductSchema = mongoose.Schema({
+    productName: { type: String, required: true },
+    Quantity: { type: Number, required: true },
+    price: { type: Number, required: true },
+
+    flavour:{ type:String, required:true },
     size:[],
-    status:{type:Number,default:1},
-    category: { type:String, required:true},
-    color: { type:String, required:true},
-    // color: { type:String, required:true},
-    ImageDetail:[
+    description:{ type:String, required:true },
+    status: { type: Number, default: 1 },
+    softDeleteStatus: { type: Number, default: 0},
+    categories: { type:String, required:true},
+    ImageDetail: [
         {
-            ImageUrl:{type:String},
-            ImageName:{type:String},
-            ImageMimeType:{type:String},
+            ImageUrl: { type: String },
+            ImageName: { type: String },
+            ImageMimeType: { type: String },
         }
     ],
-    CreatedDate:{
-        type:String,
-        default:`${year}-${month}-${day}-${time}`
+    CreatedDate: {
+        type: String,
+        default: `${year}-${month}-${day}-${time}`,
     }
-},{timestamps:true})
+}, { timestamps: true })
 
 
-module.exports=mongoose.model("Products",ProductSchema)
+//Exporting The Schema
+module.exports = mongoose.model('ProductCollection', ProductSchema);

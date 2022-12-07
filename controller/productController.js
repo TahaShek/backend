@@ -81,4 +81,80 @@ const SoftDelete=async (req,res)=>{
 }
 
 
-module.exports={ProductData,getProductData,SoftDelete}
+const HardDelete=async(req,res)=>{
+
+    try {
+        const ID=req.params._id
+        const DocumentToGet=await ProductModelSchema.findOne({id:ID})
+        if(!!DocumentToGet){
+            const dochardelete=await ProductModelSchema.deleteOne({_id:DocumentToGet._id} )
+            DocumentToGet.ImageDetail.forEach((file)=>{
+            fs.unlinkSync(`${file.ImageUrl}`)
+        })
+        fs.rmdirSync(`./assets/Product/${DocumentToGet.productName}`)
+        res.json({
+            message:'deleted',
+            data:true,
+            result:dochardelete
+         })
+        }
+    } 
+    
+    catch (error) {
+        
+        res.json({
+            message: error.message,
+            Result: null,
+            Data: false
+          })
+    }
+}
+
+
+GetParticularProductData=async(req,res)=>{
+  
+try {
+    const ID=req.params._id
+    const DocumentToUpdate=await ProductModelSchema.findOne(
+       {id:ID},
+       {status:0} 
+    )
+
+    res.json({
+        message:'data Found ',
+        result:DocumentToUpdate,
+        data:true
+    })
+} catch (error) {
+    
+    res.json({
+        message: error.message,
+        Result: null,
+        Data: false
+      })
+}
+}
+
+UpdateProductById=async(req,res)=>{
+  try {
+    const ID=req.body._id
+    const payload=req.body
+    const DocumentToUpdate=await ProductModelSchema.updateOne(
+        {_id:ID},
+        payload
+    )
+    res.json({
+        message:'data Updated',
+        result:DocumentToUpdate,
+        data:true
+    })
+  } catch (error) {
+    res.json({
+        message: error.message,
+        Result: null,
+        Data: false
+      })
+  }
+}
+
+module.exports={ProductData,getProductData,SoftDelete,HardDelete,GetParticularProductData,UpdateProductById}

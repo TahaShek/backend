@@ -1,56 +1,54 @@
-// const 
-// accquiring model 
-const UserScheema=require('../models/userModel')
+// const { emit } = require('../models/productModel')
+const UserManagementSchemma=require('../models/userModel')
 
-const UserRegister=async(req,res)=>{
-    try {
-        const {FirstName,LastName,Email,Password}=req.body
-        const checkIfAdminExists=await UserScheema.findOne({
-            email:Email
+
+
+const UserRegistration =async (req,res)=>{
+ try {
+    const {firstName,lastName,email,password}=req.body
+    const checkIFAdminAlreadyExists=await UserManagementSchemma.findOne({
+      email:email
+    })
+
+    if(checkIFAdminAlreadyExists?.userPrivilege==='Admin'){
+        return res.json({
+            message: 'Something went wrong Please ask Admin!',
+            Status: null,
+            Data: false
         })
+    }
 
-        if(checkIfAdminExists?.userPrivallege==='Admin'){
-          
-            return res.json({
-                message:'something went wrong ask admin',
-                status:null,
-                data:false
-            })
-        }
-        
-        
-   let CheckAdminIdentity=Email.split('@')[0];
-   CheckAdminIdentity=CheckAdminIdentity.to0LowerCase();
-   if(CheckAdminIdentity==='admin'){
-     const adminToCreate=new UserScheema({
-        FirstName,LastName,Email,Password,userPrivallege:'Admin'
-     })
-     AdminToSave=await adminToCreate.save()
-     return res.json({
-        message:'register Successfuly',
-        data:true
-     })
-   }
+    let IdentifyAdmin=email.split('@')[0];
+    IdentifyAdmin=IdentifyAdmin.toLowerCase();
+    if(IdentifyAdmin==='admin'){
+        const  adminToCreate =new UserManagementSchemma({
+            firstName,lastName,email,password,userPrivilege:'Admin'
+        })
+        const adminToSave=await adminToCreate.save();
+        return res.json({
+            message:'Register Successfully',
+            data:true
+        })
+    }
 
-let UserToCreate= new UserScheema({
-    FirstName,LastName,Email,Password
+const userResgiteration=new UserManagementSchemma({
+    firstName, lastName, email, password
+
 })
-const userToSave=await UserToCreate.save()
+const userToSave =await userResgiteration.save();
 res.json({
-    message:'register Successfuly',
+    message:'Register Successfully',
     data:true
 })
 
- } 
-
-
-    catch (error) {
-        res.json({
-            error: error.message,
-            data: false,
-            result: null
-        })
-    }
+ } catch (error) {
+    res.json({
+        Error: error.message,
+        Data: false,
+        Result: null
+    })
+ }
 }
 
-module.exports={UserRegister}
+
+module.exports={UserRegistration}

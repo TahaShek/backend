@@ -46,10 +46,11 @@ app.all('*', (req, res, next) => {
 // api routes
 
 const ProductDataToDatabase=require('./routes/productRoute')
+const UserRegister=require('./routes/UserManagement')
 
 
 app.use('/ProductDataToDatabase',ProductDataToDatabase)
-
+app.use('/UserRegistration',UserRegister)
 // //Start Block Checking Routes As express not found Url not Founded we need to do it explicitly 
 app.use((req, res, next) => {
     const error = new Error('Url not found');

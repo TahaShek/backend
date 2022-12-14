@@ -1,46 +1,47 @@
-const mongoose = require('mongoose');
+
+const mongoose=require('mongoose')
 const bcrypt=require('bcrypt')
-const SaltRounds=parseInt(process.env.SALT_ROUND)
-// Date
-const today = new Date(); //date class
-const day = today.getDate(); //day
-const month = today.getMonth() + 1; //month
-const year = today.getFullYear(); //year
-const time = today.getTime(); //time 
+const saltRounds=parseInt(process.env.SALT_ROUND) 
+
+// set data 
+const today=new Date();
+const day= today.getDate();
+const month =today.getMonth()+1;
+const  year=today.getFullYear()
+const time =today.getTime()
 
 
-// START of schemma
-const UserRegisterSchemma=mongoose.Schema({
-    FirstName:{type:String,required:true},
-    LasttName:{type:String,required:true},
-    Email:{type:String,required:true,unique:true},
-    Password:{type:String,required:true},
-    SaltString:{type:String,required:true},
-    status: { type: Number, default: 1 },
-    userPrivallege: { type: String,default:'User' },
-    CreatedDate: {
-        type: String,
-        default: `${year}-${month}-${day}-${time}`,
-    }
+// USERREGISTERSCHEMMA
+const UserResgisterSchemme=mongoose.Schema(
+    {
+     firstName:{type:String,required:true},
+     lastName:{type:String,required:true},
+     email:{type:String,required:true,unique:true},
+     password:{type:String,required:true},
+     saltString:{type:String},
+    userPrivilege : { type:String, default:'User'},
+     status:{type:Number,default:1},
+     CreatedDate:{
+        type:String,
+        default:`${year}-${month}-${day}-${time}`
+    },
+    },{timestamps:true} 
+    )
 
-},{timestamps:true})
-
-
-userRegisterSchema.pre('save', async function(next){
-    try {
-        const genSalt = await bcrypt.genSalt(saltRounds);
-        const hashedPassword = await bcrypt.hash(this.password,genSalt);
-        this.password = hashedPassword;
-        this.saltString = genSalt;
-        next();
-    } catch (error) {
-       return ({
-        message:error.message,
-        data:false,
-        result:null
-       })
-    }
-})
-
-
-module.exports=mongoose.model('UserCollection',UserRegisterSchemma);
+    UserResgisterSchemme.pre('save',async function(next){
+       try {
+        const GenerateSalt=await bcrypt.genSalt(saltRounds)
+        const hashedPassword=await bcrypt.hash(this.password,GenerateSalt)
+         this.password=hashedPassword
+         this.saltString=GenerateSalt
+         next()
+       } catch (error) {
+              return({
+                message:error.message,
+                Data:false,
+                result:null
+              }) 
+       }
+    })
+    
+    module.exports=mongoose.model('UserRegisterCollection',UserResgisterSchemme)

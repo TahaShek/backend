@@ -2,8 +2,9 @@ const express=require('express');
 const Router=express.Router()
 
 
-const {UserRegistration}=require('../controller/UserController');
+const {UserRegistration,UserLogin}=require('../controller/UserController');
 
  
 Router.post('/UserRegister',UserRegistration);
+Router.post('/UserLogin',UserLogin)
 module.exports=Router

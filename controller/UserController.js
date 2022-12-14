@@ -1,5 +1,7 @@
 // const { emit } = require('../models/productModel')
 const UserManagementSchemma=require('../models/userModel')
+const bycrypt=require('bcrypt')
+const jwt=require('jsonwebtoken')
 
 
 
@@ -43,12 +45,52 @@ res.json({
 
  } catch (error) {
     res.json({
-        Error: error.message,
-        Data: false,
-        Result: null
+        error: error.message,
+        data: false,
+        result: null
     })
  }
 }
 
 
-module.exports={UserRegistration}
+const UserLogin=async(req,res)=>{
+    try {
+    const {email,password}=req.body    
+     const UserExistence=await UserManagementSchemma.findOne({
+        email:email
+     })
+     if(Object.keys(UserExistence).length===0){
+        return res.json({
+            message:'email or password failed ',
+            data:false
+        })
+     }
+
+     const checkUserPassword=await bycrypt.compare(password,UserExistence.password);
+     if(checkUserPassword===false){
+        return res.json({
+            message:'email or password failed ',
+            data:false
+        })
+     }
+     
+
+    const token= jwt.sign(
+        {
+            name:'hi'
+        },
+        
+    )
+
+    } 
+    catch (error) {
+        res.json({
+            error: error.message,
+            data: false,
+            result: null
+        })
+    }
+}
+
+
+module.exports={UserRegistration,UserLogin}
